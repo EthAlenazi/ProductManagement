@@ -1,0 +1,32 @@
+﻿@model ProductFilterVm
+@{
+    Model.Providers ??= Enumerable.Empty<SelectListItem>();
+}
+<form asp-action="Index" method="get" class="row g-3 mb-3">
+    <div class="col-md-2">
+        <label asp-for="MinPrice" class="form-label"></label>
+        <input asp-for="MinPrice" class="form-control" />
+    </div>
+    <div class="col-md-2">
+        <label asp-for="MaxPrice" class="form-label"></label>
+        <input asp-for="MaxPrice" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="FromDate" class="form-label"></label>
+        <input asp-for="FromDate" type="date" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="ToDate" class="form-label"></label>
+        <input asp-for="ToDate" type="date" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="ServiceProviderId" class="form-label">Provider</label>
+        <select asp-for="ServiceProviderId" asp-items="Model.Providers" class="form-select">
+            <option value="">All</option>
+        </select>
+    </div>
+    <div class="col-12 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Apply</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+    </div>
+</form>
