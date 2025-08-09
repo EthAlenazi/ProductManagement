@@ -30,6 +30,7 @@ namespace ProductManagement.Controllers
         public IActionResult Create() => View(new ServiceProviderCreateVm());
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ServiceProviderCreateVm vm)
         {
             if (!ModelState.IsValid)

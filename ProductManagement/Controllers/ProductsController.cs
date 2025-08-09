@@ -53,7 +53,8 @@ namespace ProductManagement.Controllers
             vm.Providers = _mapper.Map<List<SelectListItem>>(providers);
         }
 
-        [HttpPost]  
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductCreateVm vm)
         {
             if (!ModelState.IsValid)
