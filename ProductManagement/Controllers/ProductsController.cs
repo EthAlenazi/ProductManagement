@@ -54,28 +54,14 @@ namespace ProductManagement.Controllers
         }
 
         [HttpPost]  
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductCreateVm vm)
         {
             if (!ModelState.IsValid)
             {
-                var errors = ModelState
-                    .Where(x => x.Value.Errors.Count > 0)
-                    .SelectMany(kvp => kvp.Value.Errors.Select(e => new
-                    {
-                        Field = kvp.Key,                     // اسم الحقل (e.g. Name, Price)
-                        Message = e.ErrorMessage,            // رسالة الفالديشن
-                        Exception = e.Exception?.Message     // لو كان فيه استثناء تحويل/ربط
-                    }))
-                    .ToList();
-
-                // مثلًا: اطبعيهم في الـ Debug Output
-                foreach (var err in errors)
-                    System.Diagnostics.Debug.WriteLine($"{err.Field}: {err.Message} | {err.Exception}");
-
                 await PopulateProvidersAsync(vm);
                 return View(vm);
             }
+        
 
             var dto = new CreateProductDto(
                 vm.Name,

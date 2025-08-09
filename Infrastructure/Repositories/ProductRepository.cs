@@ -28,7 +28,7 @@ namespace Infrastructure.Repositories
                 query = query.Where(p => p.ServiceProviderId == providerId.Value);
             var result = await query.ToListAsync();
 
-            // إذا النتيجة فاضية → رجّع كل المنتجات
+            // إذا النتيجة فاضية رجع كل المنتجات
             if (!result.Any())
             {
                 result = await _context.Products

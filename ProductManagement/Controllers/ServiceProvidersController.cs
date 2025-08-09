@@ -21,7 +21,7 @@ namespace ProductManagement.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var list = await _service.GetAllAsync(); // يفضّل أن يرجع AsNoTracking من داخل الخدمة
+            var list = await _service.GetAllAsync(); 
             var vms = _mapper.Map<List<ServiceProviderVm>>(list);
             return View(vms);
         }

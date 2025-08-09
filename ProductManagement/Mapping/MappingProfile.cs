@@ -33,17 +33,17 @@ namespace ProductManagement
             CreateMap<ServiceProviders, ServiceProviderDto>();
             CreateMap<Product, ProductDto>();
 
-            // تأكدي أن عندك هذا:
+   
             CreateMap<ProductDto, ProductVm>()
                 .ForMember(d => d.ServiceProviderName,
                            o => o.MapFrom(s => s.ServiceProviderName ?? string.Empty));
 
-            // خيـار A: النوع الدقيق
+         
             CreateMap<(IReadOnlyList<ProductDto> Products, ProductFilterVm Filter), ProductsIndexVm>()
                 .ForMember(d => d.Items, o => o.MapFrom(s => s.Products))
                 .ForMember(d => d.Filter, o => o.MapFrom(s => s.Filter));
 
-            // أو خيـار B: عام
+         
             CreateMap<(IEnumerable<ProductDto> Products, ProductFilterVm Filter), ProductsIndexVm>()
                 .ForMember(d => d.Items, o => o.MapFrom(s => s.Products))
                 .ForMember(d => d.Filter, o => o.MapFrom(s => s.Filter));
