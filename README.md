@@ -20,7 +20,7 @@ A **Clean Architecture** MVC application for managing **Service Providers** and 
 - **.NET 8** / ASP.NET Core MVC  
 - **Entity Framework Core** (SQL Server / LocalDB)  
 - **AutoMapper**  
-- (Optional) **Serilog**, **FluentValidation**, MemoryCache
+
 
 ---
 
