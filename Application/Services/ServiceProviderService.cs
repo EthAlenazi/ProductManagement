@@ -1,4 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.DTOs;
+using Application.Interfaces;
+using AutoMapper;
 using Domain.Models;
 using Infrastructure.Interfaces;
 
@@ -6,34 +8,30 @@ namespace Application.Services
 {
     public class ServiceProviderService : IServiceProviderService
     {
-        private readonly IServiceProviderRepository _providerRepository;
+        private readonly IServiceProviderRepository _repo;
+        private readonly IMapper _mapper;
 
-        public ServiceProviderService(IServiceProviderRepository providerRepository)
+        public ServiceProviderService(IServiceProviderRepository repo, IMapper mapper)
         {
-            _providerRepository = providerRepository;
+            _repo = repo;
+            _mapper = mapper;
         }
 
-        public async Task<int> CreateAsync(string name, string? phone, string? email)
+        public async Task<IReadOnlyList<ServiceProviderDto>> GetAllAsync()
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Service provider name is required.");
-
-            var provider = new ServiceProviders
-            {
-                Name = name.Trim(),
-                ContactNumber = phone,
-                Email = email
-            };
-
-            await _providerRepository.Add(provider);
-            return provider.Id;
+            var list = await _repo.GetAll(); 
+            var dto = list.Select(sp => _mapper.Map<ServiceProviderDto>(sp)).ToList();
+            return dto;
         }
 
-        public async Task<IReadOnlyList<ServiceProviders>> GetAllAsync()
+        public async Task<int> CreateAsync(CreateServiceProviderDto dto)
         {
-            var providers = await _providerRepository.GetAll();
-            return providers.ToList();
+            var entity = _mapper.Map<ServiceProviders>(dto);
+
+            await _repo.Add(entity);
+            return  entity.Id;
         }
+
+        
     }
-
 }

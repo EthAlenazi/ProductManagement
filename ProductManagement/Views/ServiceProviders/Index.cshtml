@@ -1,12 +1,12 @@
-﻿@model IEnumerable<ServiceProviders>
+﻿@model IEnumerable<ServiceProviderVm>
+
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="m-0">Service Providers</h2>
     <a class="btn btn-primary" asp-action="Create">Add Provider</a>
 </div>
+
 <table class="table table-striped table-hover">
-    <thead>
-        <tr><th>Name</th><th>Phone</th><th>Email</th></tr>
-    </thead>
+    <thead><tr><th>Name</th><th>Phone</th><th>Email</th></tr></thead>
     <tbody>
         @foreach (var p in Model)
         {

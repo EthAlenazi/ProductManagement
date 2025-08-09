@@ -2,9 +2,10 @@
 namespace Application.DTOs
 {
     public record CreateProductDto(
-        string Name,
-        decimal Price,
-        DateTime? CreationDate,
-        int ServiceProviderId
-    );
+    string Name,
+    decimal Price,
+    DateTime? CreationDate, 
+    string ServiceProviderName,
+    int ServiceProviderId
+);
 }

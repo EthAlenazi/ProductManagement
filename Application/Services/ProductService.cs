@@ -1,22 +1,23 @@
 ﻿
 using Application.DTOs;
 using Application.Interfaces;
+using AutoMapper;
 using Domain.Models;
-
 using Infrastructure.Interfaces;
 
 namespace Application.Services
 {
-
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
         private readonly IServiceProviderRepository _providerRepository;
+        private readonly IMapper _mapper;
 
-        public ProductService(IProductRepository productRepository, IServiceProviderRepository providerRepository)
+        public ProductService(IProductRepository productRepository, IServiceProviderRepository providerRepository, IMapper mapper)
         {
             _productRepository = productRepository;
             _providerRepository = providerRepository;
+            _mapper = mapper;
         }
 
         public async Task<int> CreateAsync(CreateProductDto dto)
@@ -26,8 +27,9 @@ namespace Application.Services
             if (dto.Price <= 0)
                 throw new ArgumentException("Price must be greater than zero.");
 
-            var providerExists = (await _providerRepository.GetAll()).Any(p => p.Id == dto.ServiceProviderId);
-            if (!providerExists)
+            
+            var provider = await _providerRepository.GetById(dto.ServiceProviderId);
+            if (provider is null)
                 throw new InvalidOperationException("Service provider not found.");
 
             var product = new Product
@@ -35,14 +37,14 @@ namespace Application.Services
                 Name = dto.Name.Trim(),
                 Price = dto.Price,
                 CreationDate = dto.CreationDate ?? DateTime.UtcNow,
-                ServiceProviderId = dto.ServiceProviderId
+                ServiceProviderId= dto.ServiceProviderId
             };
 
             await _productRepository.AddProduct(product);
             return product.Id;
         }
 
-        public async Task<IReadOnlyList<Product>> GetFilteredAsync(ProductFilterDto filter)
+        public async Task<IReadOnlyList<ProductDto>> GetFilteredAsync(ProductFilterDto filter)
         {
             var products = await _productRepository.GetFilteredProducts(
                 filter.MinPrice,
@@ -51,9 +53,11 @@ namespace Application.Services
                 filter.ToDate,
                 filter.ServiceProviderId
             );
-
-            return products.ToList();
+            var result = _mapper.Map<List<ProductDto>>(products);
+            return result;
         }
     }
-
 }
+
+
+

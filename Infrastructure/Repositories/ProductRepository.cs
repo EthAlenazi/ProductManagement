@@ -12,21 +12,44 @@ namespace Infrastructure.Repositories
 
         public async Task<IEnumerable<Product>> GetFilteredProducts(decimal? min, decimal? max, DateTime? from, DateTime? to, int? providerId)
         {
-            var query = _context.Products.Include(p => p.ServiceProvider).AsQueryable();
+            var query = _context.Products
+                .Include(p => p.ServiceProvider) 
+                .AsQueryable();
 
-            if (min.HasValue) query = query.Where(p => p.Price >= min);
-            if (max.HasValue) query = query.Where(p => p.Price <= max);
-            if (from.HasValue) query = query.Where(p => p.CreationDate >= from);
-            if (to.HasValue) query = query.Where(p => p.CreationDate <= to);
-            if (providerId.HasValue) query = query.Where(p => p.ServiceProviderId == providerId);
+            if (min.HasValue)
+                query = query.Where(p => p.Price >= min.Value);
+            if (max.HasValue)
+                query = query.Where(p => p.Price <= max.Value);
+            if (from.HasValue)
+                query = query.Where(p => p.CreationDate >= from.Value);
+            if (to.HasValue)
+                query = query.Where(p => p.CreationDate <= to.Value);
+            if (providerId.HasValue)
+                query = query.Where(p => p.ServiceProviderId == providerId.Value);
+            var result = await query.ToListAsync();
 
-            return await query.ToListAsync();
+            // إذا النتيجة فاضية → رجّع كل المنتجات
+            if (!result.Any())
+            {
+                result = await _context.Products
+                    .Include(p => p.ServiceProvider)
+                    .ToListAsync();
+            }
+
+            return result;
         }
 
         public async Task AddProduct(Product product)
         {
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<Product?> GetById(int id)
+        {
+            return await _context.Products
+                .Include(p => p.ServiceProvider) 
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 

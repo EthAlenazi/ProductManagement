@@ -6,16 +6,15 @@ namespace ProductManagement.Models
     public class ProductCreateVm
     {
         [Required, MaxLength(100)]
-        public string Name { get; set; }
-        [Range(0.01, double.MaxValue)] 
-        
+        public string Name { get; set; } = default!;
+        [Range(0.01, double.MaxValue)]
         public decimal Price { get; set; }
-        [DataType(DataType.Date)] 
-        
         public DateTime? CreationDate { get; set; }
-        [Required] 
+       public string? ServiceProviderName { get; set; }
+
+        [Required]
         public int ServiceProviderId { get; set; }
-        public IEnumerable<SelectListItem> Providers { get; set; } = new List<SelectListItem>();
+        public IEnumerable<SelectListItem> Providers { get; set; } = Enumerable.Empty<SelectListItem>();
     }
 
 }

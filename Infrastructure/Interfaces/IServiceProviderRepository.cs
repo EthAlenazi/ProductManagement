@@ -6,5 +6,6 @@ namespace Infrastructure.Interfaces
     {
         Task<IEnumerable<ServiceProviders>> GetAll();
         Task Add(ServiceProviders provider);
+        Task<ServiceProviders?> GetById(int id);
     }
 }

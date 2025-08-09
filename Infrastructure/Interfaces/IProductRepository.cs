@@ -6,5 +6,6 @@ namespace Infrastructure.Interfaces
     {
         Task<IEnumerable<Product>> GetFilteredProducts(decimal? minPrice, decimal? maxPrice, DateTime? fromDate, DateTime? toDate, int? providerId);
         Task AddProduct(Product product);
+        Task<Product?> GetById(int id);
     }
 }

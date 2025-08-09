@@ -6,8 +6,9 @@ namespace Application.Interfaces
 
     public interface IProductService
     {
-        Task<int> CreateAsync(CreateProductDto dto);          
-        Task<IReadOnlyList<Product>> GetFilteredAsync(ProductFilterDto filter);
+        Task<int> CreateAsync(CreateProductDto dto);
+        Task<IReadOnlyList<ProductDto>> GetFilteredAsync(ProductFilterDto filter);
+
     }
 
 }

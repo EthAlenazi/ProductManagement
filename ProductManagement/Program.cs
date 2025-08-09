@@ -4,24 +4,26 @@ using Infrastructure.Data;
 using Infrastructure.Interfaces;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using ProductManagement;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// MVC
+
 builder.Services.AddControllersWithViews();
 
-// DbContext (SQL Server example)
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-// Repositories
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IServiceProviderRepository, ServiceProviderRepository>();
 
-// Services
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IServiceProviderService, ServiceProviderService>();
+
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IServiceProviderRepository, ServiceProviderRepository>();
 
 var app = builder.Build();
 

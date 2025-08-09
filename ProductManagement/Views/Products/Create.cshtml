@@ -1,29 +1,45 @@
-﻿
-@model ProductCreateVm
-<h2>Add Product</h2>
+﻿@model ProductCreateVm
+
+<h2 class="mb-3">Add Product</h2>
+
 <form asp-action="Create" method="post" class="row g-3">
-  <div class="col-md-5">
-    <label asp-for="Name" class="form-label"></label>
-    <input asp-for="Name" class="form-control" />
-    <span asp-validation-for="Name" class="text-danger"></span>
-  </div>
-  <div class="col-md-3">
-    <label asp-for="Price" class="form-label"></label>
-    <input asp-for="Price" class="form-control" />
-    <span asp-validation-for="Price" class="text-danger"></span>
-  </div>
-  <div class="col-md-2">
-    <label asp-for="CreationDate" class="form-label"></label>
-    <input asp-for="CreationDate" type="date" class="form-control" />
-  </div>
-  <div class="col-md-4">
-    <label asp-for="ServiceProviderId" class="form-label">Service Provider</label>
-    <select asp-for="ServiceProviderId" asp-items="Model.Providers" class="form-select"></select>
-    <span asp-validation-for="ServiceProviderId" class="text-danger"></span>
-  </div>
-  <div class="col-12">
-    <button type="submit" class="btn btn-success">Save</button>
-    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
-  </div>
+    @Html.AntiForgeryToken()
+
+    <!-- ملخص أخطاء عام -->
+    <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+
+    <div class="col-md-5">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="Price" class="form-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-2">
+        <label asp-for="CreationDate" class="form-label"></label>
+        <input asp-for="CreationDate" type="date" class="form-control" />
+        <span asp-validation-for="CreationDate" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="ServiceProviderId" class="form-label">Service Provider</label>
+        <select asp-for="ServiceProviderId" asp-items="Model.Providers" class="form-select">
+            <option value="">-- اختر مزود الخدمة --</option>
+        </select>
+        <span asp-validation-for="ServiceProviderId" class="text-danger small"></span>
+    </div>
+
+    <div class="col-12 d-flex gap-2">
+        <button type="submit" class="btn btn-success">Save</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    </div>
 </form>
-@section Scripts{ @await Html.PartialAsync("_ValidationScriptsPartial") }
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
